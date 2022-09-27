@@ -78,10 +78,12 @@ export default function Home(){
         topCard: {
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-around",
-            paddingLeft: 8,
-            paddingRight: 8,
+            justifyContent: "space-between",
             padding: 2
+        },
+        ContainerbottomCard: {
+            flexDirection: "row",
+            justifyContent: "space-around"
         },
         bottomCard: {
             flexDirection: "row",
@@ -104,15 +106,13 @@ export default function Home(){
             renderItem={({item: c}) => (
                 <TouchableWithoutFeedback
                 delayPressIn={150}
-                onPressIn={() => setInfoCharacter({
+                onPress={() => setInfoCharacter({
                     name: c.name,
                     image: c.image,
                     gender: c.gender,
                     status: c.status
                 })}
-                onPressOut={() => setInfoCharacter(null)}
-                style={styles.cardContainer} 
-                key={c.id}
+                
                 >
                     <Image
                     style={styles.image}
@@ -146,10 +146,10 @@ export default function Home(){
                                 <View
                                 style={styles.topCard}
                                 >
-                                    <Ionicons name='transgender' size={26}/>
-                                    <Text
-                                    style={styles.titles}
-                                    >{infoCharacter.gender}</Text>
+                                    <Ionicons 
+                                    name='close' size={30}
+                                    onPress={() => setInfoCharacter(null)}
+                                    />
                                 </View>
 
                             </View>
@@ -159,12 +159,28 @@ export default function Home(){
                             source={{uri: infoCharacter.image}}
                             />
                             <View
-                            style={styles.bottomCard}
+                            style={styles.ContainerbottomCard}
                             >
-                                <Ionicons name='pulse' size={26}/>
-                                <Text
-                                style={styles.titles}
-                                >{infoCharacter.status}</Text>
+                                <View
+                                style={styles.bottomCard}
+                                >
+                                    
+                                    <Ionicons name='pulse' size={26}/>
+                                    <Text
+                                    style={styles.titles}
+                                    >{infoCharacter.status}</Text>
+                                </View>
+
+                                <View
+                                style={styles.bottomCard}
+                                >
+
+                                    <Ionicons name='transgender' size={26}/>
+                                    <Text
+                                    style={styles.titles}
+                                    >{infoCharacter.gender}</Text>
+                                </View>
+
                             </View>
                         </View>
                     </View>
