@@ -19,7 +19,7 @@ export default function Home(){
     const [characters, setCharacters] = useState([]);
     const [page, setPage] = useState(1);
     const [infoCharacter, setInfoCharacter] = useState(null);
-    const [fav, setFav] = useState([0, 1]);
+    const [fav, setFav] = useState([]);
 
     const windowWidth = Dimensions.get("window").width;
     const windowHeight = Dimensions.get("window").height;
@@ -35,14 +35,13 @@ export default function Home(){
 
     const addFav = async (id) => {
         try {
-            setFav(old => old === null ? id : ([...old, id]));
-            // const output = JSON.stringify(fav);
+            setFav(old => [...old, id]);
+            const output = JSON.stringify(fav);
 
-            // await AsyncStorage.setItem("favList", output);
+            await AsyncStorage.setItem("favList", output);
 
-            // await getFavList();
-
-            // console.log(fav)
+            getFavList();
+            
             console.log(fav);
 
         } catch (error) {
@@ -54,8 +53,11 @@ export default function Home(){
         try {
             const value = await AsyncStorage.getItem("favList");
             const json = JSON.parse(value);
-
-            setFav(json);
+            if(json ==! null){
+                setFav(json);
+            }else{
+                return;
+            }
         } catch (error) {
             console.log(error);
         }
@@ -64,7 +66,6 @@ export default function Home(){
 
     useEffect(() => {
         getCharacters();
-        getFavList();
     }, []);
 
     const styles = StyleSheet.create({
