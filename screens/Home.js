@@ -7,9 +7,11 @@ import {
     Image, 
     StyleSheet, 
     TouchableWithoutFeedback,
-    Dimensions 
+    Dimensions,
+    Alert 
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Home(){
@@ -17,6 +19,7 @@ export default function Home(){
     const [characters, setCharacters] = useState([]);
     const [page, setPage] = useState(1);
     const [infoCharacter, setInfoCharacter] = useState(null);
+    const [fav, setFav] = useState([0, 1]);
 
     const windowWidth = Dimensions.get("window").width;
     const windowHeight = Dimensions.get("window").height;
@@ -30,9 +33,38 @@ export default function Home(){
         }else return;
     }
 
+    const addFav = async (id) => {
+        try {
+            setFav(old => old === null ? id : ([...old, id]));
+            // const output = JSON.stringify(fav);
+
+            // await AsyncStorage.setItem("favList", output);
+
+            // await getFavList();
+
+            // console.log(fav)
+            console.log(fav);
+
+        } catch (error) {
+            console.log(error);
+        }
+    } 
+
+    const getFavList = async () => {
+        try {
+            const value = await AsyncStorage.getItem("favList");
+            const json = JSON.parse(value);
+
+            setFav(json);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         getCharacters();
+        getFavList();
     }, []);
 
     const styles = StyleSheet.create({
@@ -107,6 +139,7 @@ export default function Home(){
                 <TouchableWithoutFeedback
                 delayPressIn={150}
                 onPress={() => setInfoCharacter({
+                    id: c.id,
                     name: c.name,
                     image: c.image,
                     gender: c.gender,
@@ -161,6 +194,13 @@ export default function Home(){
                             <View
                             style={styles.ContainerbottomCard}
                             >
+                                <View>
+                                    <Ionicons
+                                    name='heart-outline'
+                                    size={30}
+                                    onPress={() => addFav(infoCharacter.id)}
+                                    />
+                                </View>
                                 <View
                                 style={styles.bottomCard}
                                 >
@@ -180,6 +220,7 @@ export default function Home(){
                                     style={styles.titles}
                                     >{infoCharacter.gender}</Text>
                                 </View>
+
 
                             </View>
                         </View>
