@@ -1,50 +1,35 @@
 import * as React from 'react';
+import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './screens/Home';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Liked from './screens/Liked';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Tab = createBottomTabNavigator();
+const Tab = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen name='All'>
-          {
-            () => (
-              <Tab.Navigator
-              screenOptions={({route}) => ({
-                tabBarIcon: ({focused, color, size}) => {
-                  let iconName;
-                  if(route.name === "Home"){
-                    iconName = focused
-                    ? "home-sharp"
-                    : "home-outline"
-                  } else if(route.name === "Liked"){
-                    iconName = focused 
-                    ? "heart-sharp"
-                    : "heart-outline"
-                  }
-
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-                tabBarActiveTintColor: 'black',
-                tabBarInactiveTintColor: 'gray',
-                headerShown: false
-                
-              })}
-              >
-                <Tab.Screen name="Home" component={Home}/>
-                <Tab.Screen name='Liked' component={Liked}/>
-              </Tab.Navigator>
-              )
-          }
-        </Drawer.Screen>
-      </Drawer.Navigator>
+      <Tab.Navigator
+      >
+        <Tab.Screen
+        name='Home'
+        component={Home}
+        options={(props) => ({
+          headerStyle: {
+            backgroundColor: "#100F0F",
+          },
+          headerTitleStyle: {
+            color: "white",
+            fontWeight: "700",
+            fontFamily: "sans-serif-medium"
+          },
+        })}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

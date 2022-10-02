@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+import Constants  from 'expo-constants';
 import { 
     Text, 
     View, 
@@ -8,18 +8,20 @@ import {
     StyleSheet, 
     TouchableWithoutFeedback,
     Dimensions,
-    Alert 
+    StatusBar
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Home(){
 
+    const navigation = useNavigation();
+
     const [characters, setCharacters] = useState([]);
     const [page, setPage] = useState(1);
     const [infoCharacter, setInfoCharacter] = useState(null);
-    const [fav, setFav] = useState([]);
+
 
     const windowWidth = Dimensions.get("window").width;
     const windowHeight = Dimensions.get("window").height;
@@ -33,45 +35,23 @@ export default function Home(){
         }else return;
     }
 
-    const addFav = async (id) => {
-        try {
-            setFav(old => [...old, id]);
-            const output = JSON.stringify(fav);
-
-            await AsyncStorage.setItem("favList", output);
-
-            getFavList();
-            
-            console.log(fav);
-
-        } catch (error) {
-            console.log(error);
-        }
-    } 
-
-    const getFavList = async () => {
-        try {
-            const value = await AsyncStorage.getItem("favList");
-            const json = JSON.parse(value);
-            if(json ==! null){
-                setFav(json);
-            }else{
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
     useEffect(() => {
         getCharacters();
-    }, []);
+        navigation.setOptions({
+            headerTitle: "R&M's Wiki",
+            headerSearchBarOptions: {
+                placeholder: "Search...",
+                textColor: "white",
+                hintTextColor: "white",
+                headerIconColor: "white"
+            },
+        })
+    }, [navigation]);
 
     const styles = StyleSheet.create({
-        cardContainer: {
-            width: "33%",
-            margin: 1
+        wholeContainer: {
+            // marginTop: Constants.statusBarHeight
+            backgroundColor: "#100F0F"
         },
         name: {
         },
@@ -85,18 +65,18 @@ export default function Home(){
             zIndex: 1,
             width: "100%",
             height: "100%",
-            backgroundColor: "rgba(52, 52, 52, 0.9)"
+            backgroundColor: "rgba(52, 52, 52, 0.8)"
         },
         cardContainer: {
             position: "absolute",
-            top: windowHeight/8,
+            top: windowHeight/5,
             left: windowWidth/18,
             zIndex: 2,
-            backgroundColor: "white",
+            backgroundColor: "#100F0F",
             width: 350,
             height: 425,
             borderRadius: 15,
-            elevation: 50
+            elevation: 50,
         },
         imageCard: {
             height: "80%",
@@ -104,9 +84,10 @@ export default function Home(){
 
         },
         titles: {
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: "600",
-            paddingLeft: 2
+            paddingLeft: 2,
+            color: "white"
         },
         topCard: {
             flexDirection: "row",
@@ -129,8 +110,12 @@ export default function Home(){
     })
     
     return(
-        <View>
+        <View style={styles.wholeContainer}>
+            <StatusBar
+            backgroundColor={"#100F0F"}
+            />
             <FlatList
+            
             numColumns={3}
             style={styles.container}
             data={characters}
@@ -170,7 +155,7 @@ export default function Home(){
                                 <View
                                 style={styles.topCard}
                                 >
-                                    <Ionicons name='person-circle' size={26}/>
+                                    <Ionicons name='person-circle' size={26} color={"white"}/>
                                     <Text
                                     style={styles.titles}
                                     >{infoCharacter.name}</Text>
@@ -183,6 +168,7 @@ export default function Home(){
                                     <Ionicons 
                                     name='close' size={30}
                                     onPress={() => setInfoCharacter(null)}
+                                    color={"white"}
                                     />
                                 </View>
 
@@ -195,18 +181,11 @@ export default function Home(){
                             <View
                             style={styles.ContainerbottomCard}
                             >
-                                <View>
-                                    <Ionicons
-                                    name='heart-outline'
-                                    size={30}
-                                    onPress={() => addFav(infoCharacter.id)}
-                                    />
-                                </View>
                                 <View
                                 style={styles.bottomCard}
                                 >
                                     
-                                    <Ionicons name='pulse' size={26}/>
+                                    <Ionicons name='pulse' size={26} color={"white"}/>
                                     <Text
                                     style={styles.titles}
                                     >{infoCharacter.status}</Text>
@@ -216,7 +195,7 @@ export default function Home(){
                                 style={styles.bottomCard}
                                 >
 
-                                    <Ionicons name='transgender' size={26}/>
+                                    <Ionicons name='transgender' size={26} color={"white"}/>
                                     <Text
                                     style={styles.titles}
                                     >{infoCharacter.gender}</Text>

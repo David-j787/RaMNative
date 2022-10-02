@@ -13,6 +13,9 @@ export default function Liked(){
     const getFavs = async () => {
         const data = await AsyncStorage.getItem("favList");
         const json = await JSON.parse(data);
+        for (let i = 0; i < json.length; i++) {
+            
+        }
         setData(json);
     }
 
