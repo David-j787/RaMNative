@@ -1,33 +1,62 @@
 import * as React from 'react';
-import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
-import Home from './screens/Home';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Liked from './screens/Liked';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { HomeStackNavigation, SearchStackNavigation } from './StackNavigation';
 
-const Tab = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+      initialRouteName='Home'
+       screenOptions={({ route }) => ({
+         tabBarIcon: ({ focused, color, size }) => {
+           let iconName;
+ 
+           if (route.name === 'Home') {
+             iconName = focused
+               ? 'home-sharp'
+               : 'home-outline';
+           } else if (route.name === 'Search') {
+             iconName = focused
+               ? 'search-sharp' 
+               : 'search-outline';
+           }
+ 
+           // You can return any component that you like here!
+           return <Ionicons name={iconName} size={size} color={color} />;
+         },
+         tabBarStyle: [{
+           backgroundColor: "black",
+           position: "absolute",
+           bottom: 20,
+           left: 20,
+           right: 20,
+           height: 58,
+           borderRadius: 15,
+         }],
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'white',
+        tabBarShowLabel: false,
+        tabBarIconStyle: {
+          alignItems: "center",
+        }
+      })}
       >
         <Tab.Screen
         name='Home'
-        component={Home}
-        options={(props) => ({
-          headerStyle: {
-            backgroundColor: "#100F0F",
-          },
-          headerTitleStyle: {
-            color: "white",
-            fontWeight: "700",
-            fontFamily: "sans-serif-medium"
-          },
-        })}
+        component={HomeStackNavigation}
+        />
+
+        <Tab.Screen
+        name='Search'
+        component={SearchStackNavigation}
         />
       </Tab.Navigator>
     </NavigationContainer>

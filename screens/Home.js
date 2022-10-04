@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Constants  from 'expo-constants';
 import { 
     Text, 
     View, 
@@ -39,18 +38,11 @@ export default function Home(){
         getCharacters();
         navigation.setOptions({
             headerTitle: "R&M's Wiki",
-            headerSearchBarOptions: {
-                placeholder: "Search...",
-                textColor: "white",
-                hintTextColor: "white",
-                headerIconColor: "white"
-            },
         })
-    }, [navigation]);
+    }, []);
 
     const styles = StyleSheet.create({
         wholeContainer: {
-            // marginTop: Constants.statusBarHeight
             backgroundColor: "#100F0F"
         },
         name: {
@@ -69,7 +61,7 @@ export default function Home(){
         },
         cardContainer: {
             position: "absolute",
-            top: windowHeight/5,
+            top: windowHeight/9,
             left: windowWidth/18,
             zIndex: 2,
             backgroundColor: "#100F0F",
@@ -115,9 +107,7 @@ export default function Home(){
             backgroundColor={"#100F0F"}
             />
             <FlatList
-            
             numColumns={3}
-            style={styles.container}
             data={characters}
             onEndReached={getCharacters}
             onEndReachedThreshold={0.01}
