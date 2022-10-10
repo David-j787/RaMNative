@@ -11,7 +11,7 @@ export function  HomeStackNavigation(){
     return(
         <Stack.Navigator>
             <Stack.Screen
-            name="1"
+            name=" "
             component={Home}
             options={(props) => ({
                 headerStyle: {
@@ -32,7 +32,7 @@ export function SearchStackNavigation(){
     return(
         <Stack.Navigator>
             <Stack.Screen
-            name="2"
+            name="  "
             component={Search}
             options={(props) => ({
                 headerStyle: {

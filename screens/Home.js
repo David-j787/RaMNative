@@ -121,7 +121,6 @@ export default function Home(){
                     gender: c.gender,
                     status: c.status
                 })}
-                
                 >
                     <Image
                     style={styles.image}

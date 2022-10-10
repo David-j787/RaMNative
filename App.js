@@ -33,11 +33,7 @@ export default function App() {
          tabBarStyle: [{
            backgroundColor: "black",
            position: "absolute",
-           bottom: 20,
-           left: 20,
-           right: 20,
-           height: 58,
-           borderRadius: 15,
+           height: 58
          }],
         headerShown: false,
         tabBarHideOnKeyboard: true,
